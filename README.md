@@ -2,6 +2,8 @@
 
 This part of the assignment was made using `React` with `Typescript` and `Vite` to generate the project.
 
+Main repo: https://github.com/jorgepezzuol/fixably-assignment-api
+
 ## Setup
 
 - create a `.env` in the root folder of the project and paste a valid assignment code, example: `VITE_FIXABLY_CODE=11111111`
