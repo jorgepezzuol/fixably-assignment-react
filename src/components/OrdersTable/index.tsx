@@ -6,6 +6,7 @@ export function OrdersTable() {
 
   return (
     <Container>
+      {localStorage.getItem('token')}
       <table>
         <thead>
           <tr>

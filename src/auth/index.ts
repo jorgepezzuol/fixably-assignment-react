@@ -22,28 +22,20 @@ export const fetchToken = async () => {
     data: bodyRequest,
   });
 
-  localStorage.setItem(FIXABLY_TOKEN_KEY, response.data.token);
+  saveToken(response.data.token);
 
-  return response.data.token;
+  return localStorage.getItem(FIXABLY_TOKEN_KEY);
 };
 
-export const isTokenExpired = (): boolean => {
-  const tokenExpireMilliseconds = Number(
-    localStorage.getItem(FIXABLY_TOKEN_EXPIRE_KEY)
-  );
-
-  const nowMilliseconds = new Date().getTime();
-
-  return (
-    (tokenExpireMilliseconds - nowMilliseconds) / ONE_MINUTE_IN_MILLISECONDS >=
-    MAX_TOKEN_LIFESPAN_IN_MINUTES
-  );
+const isTokenExpired = (): boolean => {
+  const tokenExpireTime = localStorage.getItem(FIXABLY_TOKEN_EXPIRE_KEY);
+  return !tokenExpireTime || new Date() >= new Date(tokenExpireTime);
 };
 
-export const saveTokenExpireTime = () => {
-  const fiveMinutesFromNow =
-    new Date().getMinutes() +
-    MAX_TOKEN_LIFESPAN_IN_MINUTES * ONE_MINUTE_IN_MILLISECONDS;
+const saveToken = (token: string) => {
+  let tokenExpireTime = new Date();
+  tokenExpireTime.setMinutes(tokenExpireTime.getMinutes() + 1);
 
-  localStorage.saveItem(FIXABLY_TOKEN_EXPIRE_KEY, fiveMinutesFromNow);
+  localStorage.setItem(FIXABLY_TOKEN_KEY, token);
+  localStorage.setItem(FIXABLY_TOKEN_EXPIRE_KEY, tokenExpireTime.toString());
 };
